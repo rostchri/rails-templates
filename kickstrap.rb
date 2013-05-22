@@ -24,124 +24,124 @@ gem 'rails_kickstrap', :git => 'https://github.com/snoepkast/rails_kickstrap.git
 #end
 
 
-initializer 'kaminari_config.rb', <<-CODE
-  Kaminari.configure do |config|
-    config.default_per_page = 50
-    config.window = 4
-    config.outer_window = 0
-    config.left = 0
-    config.right = 0
-    config.param_name = :page
-  end
-CODE
-
-
-file 'app/views/kaminari/_first_page.html.haml', <<-CODE
--#  Link to the "First" page
--#  available local variables
--#    url:           url to the first page
--#    current_page:  a page object for the currently displayed page
--#    num_pages:     total number of pages
--#    per_page:      number of items to fetch per page
--#    remote:        data-remote
-- unless current_page.first?
-  %li{:class => "first"}
-    = link_to_unless current_page.first?, railstrap_image('icon-fast-backward'), url, :remote => remote
-CODE
-
-
-file 'app/views/kaminari/_gap.html.haml', <<-CODE
--#  Non-link tag that stands for skipped pages...
--#  available local variables
--#    current_page:  a page object for the currently displayed page
--#    num_pages:     total number of pages
--#    per_page:      number of items to fetch per page
--#    remote:        data-remote
-%li{:class => "page gap disabled"}
-  %a{:href => "#",  :onclick => "return false;"}
-    = raw(t 'views.pagination.truncate')
-CODE
-
-
-file 'app/views/kaminari/_last_page.html.haml', <<-CODE
--#  Link to the "Last" page
--#  available local variables
--#    url:           url to the last page
--#    current_page:  a page object for the currently displayed page
--#    num_pages:     total number of pages
--#    per_page:      number of items to fetch per page
--#    remote:        data-remote
-- unless current_page.last?
-	%li{:class=>"last next"}
-		= link_to_unless current_page.last?, railstrap_image('icon-fast-forward'), url, {:remote => remote}
-CODE
-
-
-file 'app/views/kaminari/_next_page.html.haml', <<-CODE
--#  Link to the "Next" page
--#  available local variables
--#    url:           url to the next page
--#    current_page:  a page object for the currently displayed page
--#    num_pages:     total number of pages
--#    per_page:      number of items to fetch per page
--#    remote:        data-remote
-- unless current_page.last?
-	%li{:class=>"next_page"}
-		= link_to_unless current_page.last?, railstrap_image('icon-forward'), url, :rel => 'next', :remote => remote
-CODE
-
-
-file 'app/views/kaminari/_page.html.haml', <<-CODE
--#  Link showing page number
--#  available local variables
--#    page:          a page object for "this" page
--#    url:           url to this page
--#    current_page:  a page object for the currently displayed page
--#    num_pages:     total number of pages
--#    per_page:      number of items to fetch per page
--#    remote:        data-remote
-%li{:class=>"page #{' active' if page.current? }"}
-  = link_to page, url, opts = {:remote => remote, :rel => page.next? ? 'next' : page.prev? ? 'prev' : nil}
-CODE
-
-
-file 'app/views/kaminari/_paginator.html.haml', <<-CODE
--#  The container tag
--#  available local variables
--#    current_page:  a page object for the currently displayed page
--#    num_pages:     total number of pages
--#    per_page:      number of items to fetch per page
--#    remote:        data-remote
--#    paginator:     the paginator that renders the pagination tags inside
-= paginator.render do
-  %nav.pagination
-    %ul
-      = first_page_tag unless current_page.first?
-      = prev_page_tag unless current_page.first?
-      - each_page do |page| 
-        - if page.left_outer? || page.right_outer? || page.inside_window? 
-          = page_tag page
-        - elsif !page.was_truncated? 
-          = gap_tag
-      = next_page_tag unless current_page.last? 
-      = last_page_tag unless current_page.last?
-= raw(t('views.pagination.items',:low => collection.offset_value + 1, :high => collection.offset_value + collection.length, :total => collection.total_count))
-= "Einträge #{collection.offset_value + 1} - #{collection.offset_value + collection.length} von insgesamt #{collection.total_count}"
-CODE
-
-
-file 'app/views/kaminari/_prev_page.html.haml', <<-CODE
--#  Link to the "Previous" page
--#  available local variables
--#    url:           url to the previous page
--#    current_page:  a page object for the currently displayed page
--#    num_pages:     total number of pages
--#    per_page:      number of items to fetch per page
--#    remote:        data-remote
-- unless current_page.first?
-	%li{:class=>"prev"}
-		= link_to_unless current_page.first?, railstrap_image('icon-backward'), url, :rel => 'prev', :remote => remote
-CODE
+# initializer 'kaminari_config.rb', <<-CODE
+#   Kaminari.configure do |config|
+#     config.default_per_page = 50
+#     config.window = 4
+#     config.outer_window = 0
+#     config.left = 0
+#     config.right = 0
+#     config.param_name = :page
+#   end
+# CODE
+# 
+# 
+# file 'app/views/kaminari/_first_page.html.haml', <<-CODE
+# -#  Link to the "First" page
+# -#  available local variables
+# -#    url:           url to the first page
+# -#    current_page:  a page object for the currently displayed page
+# -#    num_pages:     total number of pages
+# -#    per_page:      number of items to fetch per page
+# -#    remote:        data-remote
+# - unless current_page.first?
+#   %li{:class => "first"}
+#     = link_to_unless current_page.first?, railstrap_image('icon-fast-backward'), url, :remote => remote
+# CODE
+# 
+# 
+# file 'app/views/kaminari/_gap.html.haml', <<-CODE
+# -#  Non-link tag that stands for skipped pages...
+# -#  available local variables
+# -#    current_page:  a page object for the currently displayed page
+# -#    num_pages:     total number of pages
+# -#    per_page:      number of items to fetch per page
+# -#    remote:        data-remote
+# %li{:class => "page gap disabled"}
+#   %a{:href => "#",  :onclick => "return false;"}
+#     = raw(t 'views.pagination.truncate')
+# CODE
+# 
+# 
+# file 'app/views/kaminari/_last_page.html.haml', <<-CODE
+# -#  Link to the "Last" page
+# -#  available local variables
+# -#    url:           url to the last page
+# -#    current_page:  a page object for the currently displayed page
+# -#    num_pages:     total number of pages
+# -#    per_page:      number of items to fetch per page
+# -#    remote:        data-remote
+# - unless current_page.last?
+#   %li{:class=>"last next"}
+#     = link_to_unless current_page.last?, railstrap_image('icon-fast-forward'), url, {:remote => remote}
+# CODE
+# 
+# 
+# file 'app/views/kaminari/_next_page.html.haml', <<-CODE
+# -#  Link to the "Next" page
+# -#  available local variables
+# -#    url:           url to the next page
+# -#    current_page:  a page object for the currently displayed page
+# -#    num_pages:     total number of pages
+# -#    per_page:      number of items to fetch per page
+# -#    remote:        data-remote
+# - unless current_page.last?
+#   %li{:class=>"next_page"}
+#     = link_to_unless current_page.last?, railstrap_image('icon-forward'), url, :rel => 'next', :remote => remote
+# CODE
+# 
+# 
+# file 'app/views/kaminari/_page.html.haml', <<-CODE
+# -#  Link showing page number
+# -#  available local variables
+# -#    page:          a page object for "this" page
+# -#    url:           url to this page
+# -#    current_page:  a page object for the currently displayed page
+# -#    num_pages:     total number of pages
+# -#    per_page:      number of items to fetch per page
+# -#    remote:        data-remote
+# %li{:class=>"page #{' active' if page.current? }"}
+#   = link_to page, url, opts = {:remote => remote, :rel => page.next? ? 'next' : page.prev? ? 'prev' : nil}
+# CODE
+# 
+# 
+# file 'app/views/kaminari/_paginator.html.haml', <<-CODE
+# -#  The container tag
+# -#  available local variables
+# -#    current_page:  a page object for the currently displayed page
+# -#    num_pages:     total number of pages
+# -#    per_page:      number of items to fetch per page
+# -#    remote:        data-remote
+# -#    paginator:     the paginator that renders the pagination tags inside
+# = paginator.render do
+#   %nav.pagination
+#     %ul
+#       = first_page_tag unless current_page.first?
+#       = prev_page_tag unless current_page.first?
+#       - each_page do |page| 
+#         - if page.left_outer? || page.right_outer? || page.inside_window? 
+#           = page_tag page
+#         - elsif !page.was_truncated? 
+#           = gap_tag
+#       = next_page_tag unless current_page.last? 
+#       = last_page_tag unless current_page.last?
+# = raw(t('views.pagination.items',:low => collection.offset_value + 1, :high => collection.offset_value + collection.length, :total => collection.total_count))
+# = "Einträge #{collection.offset_value + 1} - #{collection.offset_value + collection.length} von insgesamt #{collection.total_count}"
+# CODE
+# 
+# 
+# file 'app/views/kaminari/_prev_page.html.haml', <<-CODE
+# -#  Link to the "Previous" page
+# -#  available local variables
+# -#    url:           url to the previous page
+# -#    current_page:  a page object for the currently displayed page
+# -#    num_pages:     total number of pages
+# -#    per_page:      number of items to fetch per page
+# -#    remote:        data-remote
+# - unless current_page.first?
+#   %li{:class=>"prev"}
+#     = link_to_unless current_page.first?, railstrap_image('icon-backward'), url, :rel => 'prev', :remote => remote
+# CODE
 
 
 
