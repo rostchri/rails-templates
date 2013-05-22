@@ -129,7 +129,6 @@ file 'app/views/kaminari/_paginator.html.haml', <<-CODE
       = next_page_tag unless current_page.last? 
       = last_page_tag unless current_page.last?
 = raw(t('views.pagination.items',:low => collection.offset_value + 1, :high => collection.offset_value + collection.length, :total => collection.total_count))
-= "Einträge \#{collection.offset_value + 1} - \#{collection.offset_value + collection.length} von insgesamt \#{collection.total_count}"
 CODE
 
 
