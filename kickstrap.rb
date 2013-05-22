@@ -22,14 +22,10 @@ gem 'rails_kickstrap', :git => 'https://github.com/snoepkast/rails_kickstrap.git
 #  gem 'jquery-ui-rails'
 #end
 
+application 'config.time_zone = "Berlin"'
+application 'config.i18n.default_locale = :de'
 
-environment 'config.action_mailer.default_url_options = {host: "http://yourwebsite.example.com"}', env: 'production'
-
-# application 'config.time_zone', 'Berlin'
-# application 'config.i18n.default_locale', :de
-# 
-# application 'config', :time_zone => 'Berlin'
-# application 'config.i18n', :default_locale => :de
+#environment 'config.action_mailer.default_url_options = {host: "http://yourwebsite.example.com"}', env: 'production'
 
 initializer 'kaminari_config.rb', <<-CODE
   Kaminari.configure do |config|
