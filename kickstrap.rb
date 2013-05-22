@@ -51,33 +51,33 @@ file 'app/views/kaminari/_first_page.html.haml', <<-CODE
   %li{:class => "first"}
     = link_to_unless current_page.first?, railstrap_image('icon-fast-backward'), url, :remote => remote
 CODE
-# 
-# 
-# file 'app/views/kaminari/_gap.html.haml', <<-CODE
-# -#  Non-link tag that stands for skipped pages...
-# -#  available local variables
-# -#    current_page:  a page object for the currently displayed page
-# -#    num_pages:     total number of pages
-# -#    per_page:      number of items to fetch per page
-# -#    remote:        data-remote
-# %li{:class => "page gap disabled"}
-#   %a{:href => "#",  :onclick => "return false;"}
-#     = raw(t 'views.pagination.truncate')
-# CODE
-# 
-# 
-# file 'app/views/kaminari/_last_page.html.haml', <<-CODE
-# -#  Link to the "Last" page
-# -#  available local variables
-# -#    url:           url to the last page
-# -#    current_page:  a page object for the currently displayed page
-# -#    num_pages:     total number of pages
-# -#    per_page:      number of items to fetch per page
-# -#    remote:        data-remote
-# - unless current_page.last?
-#   %li{:class=>"last next"}
-#     = link_to_unless current_page.last?, railstrap_image('icon-fast-forward'), url, {:remote => remote}
-# CODE
+
+
+file 'app/views/kaminari/_gap.html.haml', <<-CODE
+-#  Non-link tag that stands for skipped pages...
+-#  available local variables
+-#    current_page:  a page object for the currently displayed page
+-#    num_pages:     total number of pages
+-#    per_page:      number of items to fetch per page
+-#    remote:        data-remote
+%li{:class => "page gap disabled"}
+  %a{:href => "#",  :onclick => "return false;"}
+    = raw(t 'views.pagination.truncate')
+CODE
+
+
+file 'app/views/kaminari/_last_page.html.haml', <<-CODE
+-#  Link to the "Last" page
+-#  available local variables
+-#    url:           url to the last page
+-#    current_page:  a page object for the currently displayed page
+-#    num_pages:     total number of pages
+-#    per_page:      number of items to fetch per page
+-#    remote:        data-remote
+- unless current_page.last?
+  %li{:class=>"last next"}
+    = link_to_unless current_page.last?, railstrap_image('icon-fast-forward'), url, {:remote => remote}
+CODE
 # 
 # 
 # file 'app/views/kaminari/_next_page.html.haml', <<-CODE
