@@ -20,9 +20,8 @@ gem 'rails_kickstrap', :git => 'https://github.com/snoepkast/rails_kickstrap.git
 
 
 gem_group :assets do
-  gem 'jquery-rails'
-  gem 'coffee-rails'
-  gem 'jquery-ui-rails'
+  #gem 'jquery-rails'
+  #gem 'jquery-ui-rails'
 end
 
 
