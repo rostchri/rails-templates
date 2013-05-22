@@ -17,12 +17,13 @@ gem 'railstrap', :git => 'git://github.com/rostchri/railstrap.git', :branch => '
 #gem 'less-rails'
 gem 'rails_kickstrap', :git => 'https://github.com/snoepkast/rails_kickstrap.git'
 
-
 #gem_group :assets do
 #  gem 'jquery-rails'
 #  gem 'jquery-ui-rails'
 #end
 
+application config.time_zone = 'Berlin'
+application config.i18n.default_locale = :de
 
 initializer 'kaminari_config.rb', <<-CODE
   Kaminari.configure do |config|
