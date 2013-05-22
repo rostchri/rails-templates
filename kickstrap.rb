@@ -93,19 +93,19 @@ file 'app/views/kaminari/_next_page.html.haml', <<-CODE
     = link_to_unless current_page.last?, railstrap_image('icon-forward'), url, :rel => 'next', :remote => remote
 CODE
 
-
-file 'app/views/kaminari/_page.html.haml', <<-CODE
--#  Link showing page number
--#  available local variables
--#    page:          a page object for "this" page
--#    url:           url to this page
--#    current_page:  a page object for the currently displayed page
--#    num_pages:     total number of pages
--#    per_page:      number of items to fetch per page
--#    remote:        data-remote
-%li{:class=>"page #{' active' if page.current? }"}
-  = link_to page, url, opts = {:remote => remote, :rel => page.next? ? 'next' : page.prev? ? 'prev' : nil}
-CODE
+# 
+# file 'app/views/kaminari/_page.html.haml', <<-CODE
+# -#  Link showing page number
+# -#  available local variables
+# -#    page:          a page object for "this" page
+# -#    url:           url to this page
+# -#    current_page:  a page object for the currently displayed page
+# -#    num_pages:     total number of pages
+# -#    per_page:      number of items to fetch per page
+# -#    remote:        data-remote
+# %li{:class=>"page #{' active' if page.current? }"}
+#   = link_to page, url, opts = {:remote => remote, :rel => page.next? ? 'next' : page.prev? ? 'prev' : nil}
+# CODE
 
 
 file 'app/views/kaminari/_paginator.html.haml', <<-CODE
