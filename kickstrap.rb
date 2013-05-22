@@ -24,30 +24,30 @@ gem 'rails_kickstrap', :git => 'https://github.com/snoepkast/rails_kickstrap.git
 #end
 
 
-# initializer 'kaminari_config.rb', <<-CODE
-#   Kaminari.configure do |config|
-#     config.default_per_page = 50
-#     config.window = 4
-#     config.outer_window = 0
-#     config.left = 0
-#     config.right = 0
-#     config.param_name = :page
-#   end
-# CODE
-# 
-# 
-# file 'app/views/kaminari/_first_page.html.haml', <<-CODE
-# -#  Link to the "First" page
-# -#  available local variables
-# -#    url:           url to the first page
-# -#    current_page:  a page object for the currently displayed page
-# -#    num_pages:     total number of pages
-# -#    per_page:      number of items to fetch per page
-# -#    remote:        data-remote
-# - unless current_page.first?
-#   %li{:class => "first"}
-#     = link_to_unless current_page.first?, railstrap_image('icon-fast-backward'), url, :remote => remote
-# CODE
+initializer 'kaminari_config.rb', <<-CODE
+  Kaminari.configure do |config|
+    config.default_per_page = 50
+    config.window = 4
+    config.outer_window = 0
+    config.left = 0
+    config.right = 0
+    config.param_name = :page
+  end
+CODE
+
+
+file 'app/views/kaminari/_first_page.html.haml', <<-CODE
+-#  Link to the "First" page
+-#  available local variables
+-#    url:           url to the first page
+-#    current_page:  a page object for the currently displayed page
+-#    num_pages:     total number of pages
+-#    per_page:      number of items to fetch per page
+-#    remote:        data-remote
+- unless current_page.first?
+  %li{:class => "first"}
+    = link_to_unless current_page.first?, railstrap_image('icon-fast-backward'), url, :remote => remote
+CODE
 # 
 # 
 # file 'app/views/kaminari/_gap.html.haml', <<-CODE
@@ -207,7 +207,7 @@ CODE
 
 
 
-file 'config/locales/de.yml ', <<-CODE
+file 'config/locales/de.yml', <<-CODE
 de:
   date:
     abbr_day_names:
