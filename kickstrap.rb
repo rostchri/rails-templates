@@ -27,6 +27,77 @@ application 'config.i18n.default_locale = :de'
 
 #environment 'config.action_mailer.default_url_options = {host: "http://yourwebsite.example.com"}', env: 'production'
 
+file 'app/assets/javascripts/custom_application.js', <<-CODE
+//= require tablegrid
+//= require kickstrap
+CODE
+
+
+file 'app/assets/stylesheets/custom_application.css', <<-CODE
+/*
+ *= require tablegrid
+ *= require railstrap
+ * require formtastic-bootstrap
+ *= require kickstrap/custom_kickstrap
+*/
+CODE
+
+
+file 'app/assets/stylesheets/kickstrap/custom_kickstrap.less', <<-CODE
+@import "kickstrap";
+@apps: 	"bootstrap, chosen, pinesnotify";
+//@apps: 	"bootstrap, chosen, pinesnotify, tinygrowl";
+@import "kickstrap/console";
+@import "tablegrid/hover";
+CODE
+
+file 'app/controllers/application_controller.rb', <<-CODE
+class ApplicationController < ActionController::Base
+  protect_from_forgery  
+  helper_method :controller?, :action?, :scope?
+  
+  def controller?(*controllers)
+    !(controllers.flatten & [controller_name.to_sym]).empty?
+  end
+  
+  def action?(*actions)
+    !(actions.flatten & [action_name.to_sym]).empty?
+  end
+  
+  def scope?(*scopes)
+    !(params.keys.map{|k| k.to_sym} & scopes.flatten).empty?
+  end
+end
+CODE
+
+
+file 'app/controllers/resources_controller.rb', <<-CODE
+  class ResourcesController < InheritedResources::Base
+    helper_method :sort_column, :sort_direction
+    has_scope :page, :default => 1
+    private
+      # ascending sort by id if nothing else is specified
+      def sort_column
+        resource_class.column_names.include?(params[:sort]) ? params[:sort] : "id"
+      end
+      def sort_direction
+        %w[asc desc].include?(params[:direction]) ?  params[:direction] : "asc"
+      end
+    protected
+      # for generic table-ordering by column
+      def collection
+        sortorder  = sort_column
+        sortorder += ' ' + sort_direction unless sort_direction.nil?
+        #printf "TEST: @%p=%p\n", resource_class.name.pluralize.downcase,  self.instance_variables
+        #@incidents ||= end_of_association_chain.reorder(sortorder)
+        c="@#{resource_class.name.pluralize.downcase}"
+        instance_variable_set(c,end_of_association_chain.reorder(sortorder)) if instance_variable_get(c).nil? || instance_variable_get(c) == false
+        instance_variable_get("@#{resource_class.name.pluralize.downcase}")
+      end
+  end
+CODE
+
+
 initializer 'kaminari_config.rb', <<-CODE
   Kaminari.configure do |config|
     config.default_per_page = 50
@@ -116,19 +187,25 @@ file 'app/views/kaminari/_paginator.html.haml', <<-CODE
 -#    per_page:      number of items to fetch per page
 -#    remote:        data-remote
 -#    paginator:     the paginator that renders the pagination tags inside
+- position   ||= :top
+- lowcount   ||= 0
+- highcount  ||= 0
+- totalcount ||= 0
+- legend = raw(t('views.pagination.items',:low => lowcount, :high => highcount, :total => totalcount))
 = paginator.render do
-  %nav.pagination
-    %ul
-      = first_page_tag unless current_page.first?
-      = prev_page_tag unless current_page.first?
-      - each_page do |page| 
-        - if page.left_outer? || page.right_outer? || page.inside_window? 
-          = page_tag page
-        - elsif !page.was_truncated? 
-          = gap_tag
-      = next_page_tag unless current_page.last? 
-      = last_page_tag unless current_page.last?
-= raw(t('views.pagination.items',:low => collection.offset_value + 1, :high => collection.offset_value + collection.length, :total => collection.total_count))
+	= legend if position == :bottom
+	%nav.pagination
+		%ul
+			= first_page_tag unless current_page.first?
+			= prev_page_tag unless current_page.first?
+			- each_page do |page| 
+				- if page.left_outer? || page.right_outer? || page.inside_window? 
+					= page_tag page
+				- elsif !page.was_truncated? 
+					= gap_tag
+			= next_page_tag unless current_page.last? 
+			= last_page_tag unless current_page.last?
+	= legend if position == :top
 CODE
 
 
@@ -203,8 +280,15 @@ de:
   activerecord:
     errors:
       models:    
+        model:
+          one: Model
+          other: Modelle    
     models:
-      attributes:
+    attributes:
+      model:
+        column:
+          one: Spalte
+          other: Spalten
 CODE
 
 
