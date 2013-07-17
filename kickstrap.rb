@@ -8,7 +8,7 @@ gem 'responders'
 
 
 gem 'formtastic'  #, :git => 'git://github.com/justinfrench/formtastic.git', :branch => '2.1-stable', :require => 'formtastic'
-#gem 'formtastic-bootstrap', :git => 'git://github.com/cgunther/formtastic-bootstrap.git', :branch => 'bootstrap2-rails3-2-formtastic-2-1', :require => 'formtastic-bootstrap'
+gem 'formtastic-bootstrap' #, :git => 'git://github.com/cgunther/formtastic-bootstrap.git', :branch => 'bootstrap2-rails3-2-formtastic-2-1', :require => 'formtastic-bootstrap'
 
 
 gem 'tablegrid', :git => 'git://github.com/rostchri/tablegrid.git'
@@ -16,6 +16,7 @@ gem 'railstrap', :git => 'git://github.com/rostchri/railstrap.git', :branch => '
 
 #gem 'less-rails'
 gem 'rails_kickstrap', :git => 'https://github.com/snoepkast/rails_kickstrap.git'
+gem "select2-rails"
 
 #gem_group :assets do
 #  gem 'jquery-rails'
@@ -30,6 +31,7 @@ application 'config.i18n.default_locale = :de'
 file 'app/assets/javascripts/custom_application.js', <<-CODE
 //= require tablegrid
 //= require kickstrap
+//= require select2
 CODE
 
 
@@ -37,15 +39,16 @@ file 'app/assets/stylesheets/custom_application.css', <<-CODE
 /*
  *= require tablegrid
  *= require railstrap
- * require formtastic-bootstrap
+ *= require formtastic-bootstrap
  *= require kickstrap/custom_kickstrap
+ *= require select2
 */
 CODE
 
 
 file 'app/assets/stylesheets/kickstrap/custom_kickstrap.less', <<-CODE
 @import "kickstrap";
-@apps: 	"bootstrap, chosen, pinesnotify";
+@apps: 	"bootstrap, pinesnotify";
 //@apps: 	"bootstrap, chosen, pinesnotify, tinygrowl";
 @import "kickstrap/console";
 @import "tablegrid/hover";
@@ -60,6 +63,10 @@ class ApplicationController < ActionController::Base
     !(controllers.flatten & [controller_name.to_sym]).empty?
   end
   
+  def nestedparent?(*parents)
+    parent? && (parents.flatten & [parent_type]).empty?
+  end
+  
   def action?(*actions)
     !(actions.flatten & [action_name.to_sym]).empty?
   end
@@ -67,6 +74,20 @@ class ApplicationController < ActionController::Base
   def scope?(*scopes)
     !(params.keys.map{|k| k.to_sym} & scopes.flatten).empty?
   end
+  
+  protected
+  
+  private
+  
+  def store_location(location = request.url)
+    session[:return_to] = request.url
+  end
+
+  def redirect_back_or_default(default)
+    redirect_to(session[:return_to] || default)
+    session[:return_to] = nil
+  end
+
 end
 CODE
 
@@ -95,6 +116,12 @@ file 'app/controllers/resources_controller.rb', <<-CODE
         instance_variable_get("@#{resource_class.name.pluralize.downcase}")
       end
   end
+CODE
+
+
+initializer 'formtastic.rb', <<-CODE
+# use FormtasticBootstrap::FormBuilder for twitter-bootstrap forms in formtastic
+Formtastic::Helpers::FormHelper.builder = FormtasticBootstrap::FormBuilder
 CODE
 
 
@@ -191,7 +218,7 @@ file 'app/views/kaminari/_paginator.html.haml', <<-CODE
 - lowcount   ||= 0
 - highcount  ||= 0
 - totalcount ||= 0
-- legend = raw(t('views.pagination.items',:low => lowcount, :high => highcount, :total => totalcount))
+- legend = raw(t('views.pagination.items', :low => lowcount, :high => highcount, :total => totalcount))
 = paginator.render do
 	= legend if position == :bottom
 	%nav.pagination
@@ -205,7 +232,9 @@ file 'app/views/kaminari/_paginator.html.haml', <<-CODE
 					= gap_tag
 			= next_page_tag unless current_page.last? 
 			= last_page_tag unless current_page.last?
-	= legend if position == :top
+	- if position == :top
+		.tablegrid_paginator_clear
+		= legend
 CODE
 
 
@@ -226,6 +255,9 @@ CODE
 
 file 'config/locales/de_txt.yml', <<-CODE
 de:
+  save: Speichern
+  cancel: Cancel
+  
   start_at_formatted: "Beginn"
   end_at_formatted: "Ende"
   
